@@ -7,11 +7,10 @@
 <style>
 :root{--bg:#0d1117;--panel:#151b23;--row:#161d27;--rowh:#1b2431;--line:#263041;--tx:#e6edf3;--mut:#8b98a9;--acc:#58a6ff;--ok:#3fb950;--okbg:rgba(63,185,80,.1);--e:#3fb950;--m:#e3a008;--h:#f85149;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 :root[data-theme="light"]{--bg:#f4f6fa;--panel:#fff;--row:#fff;--rowh:#f1f5fb;--line:#dde3ec;--tx:#18202b;--mut:#5d6b7e;--acc:#1f6feb;--ok:#1a7f37;--okbg:rgba(26,127,55,.08);--e:#1a7f37;--m:#9a6700;--h:#cf222e;color-scheme:light}
-@media (prefers-color-scheme:light){:root:not([data-theme="dark"]):not([data-theme="light"]){}}
 *{box-sizing:border-box}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-.wrap{max-width:980px;margin:0 auto;padding:20px 16px 60px}
+.wrap{max-width:1020px;margin:0 auto;padding:20px 16px 60px}
 header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
 h1{font-size:22px;margin:0;letter-spacing:-.01em}
 h1 small{display:block;font-size:13px;color:var(--mut);font-weight:400;margin-top:2px}
@@ -19,20 +18,27 @@ button,select,input{font:inherit;color:inherit}
 .btn{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:7px 12px;cursor:pointer;transition:.15s}
 .btn:hover{border-color:var(--acc)}
 .btn.danger:hover{border-color:var(--h);color:var(--h)}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+/* Overall stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
 .stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
 .stat b{display:block;font-size:24px;letter-spacing:-.02em}
 .stat span{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.05em}
-.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin:14px 0 4px}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin:10px 0 4px}
 .bar i{display:block;height:100%;width:0;background:var(--ok);border-radius:99px;transition:width .3s}
-.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0 18px}
-.cat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;text-align:left;transition:.15s}
-.cat:hover{border-color:var(--acc)}
-.cat .n{font-size:12.5px;color:var(--mut);display:flex;justify-content:space-between;gap:6px}
-.cat .bar{height:5px;margin:8px 0 0}
+/* Stage cards */
+.stages{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:14px 0 20px}
+.stage-card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 13px;cursor:pointer;text-align:left;transition:.15s}
+.stage-card:hover{border-color:var(--acc)}
+.stage-card.active{border-color:var(--acc);background:rgba(88,166,255,.07)}
+.stage-card .sc-title{font-size:12px;font-weight:600;color:var(--tx);margin-bottom:2px;line-height:1.3}
+.stage-card .sc-sub{font-size:11px;color:var(--mut);margin-bottom:6px}
+.stage-card .sc-counts{font-size:12px;color:var(--mut);display:flex;justify-content:space-between;gap:4px}
+.stage-card .bar{height:5px;margin:7px 0 0}
+/* Tabs (kept for category filter compat, now shows All + stage names) */
 .tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:10px}
 .tab{white-space:nowrap;background:none;border:1px solid var(--line);border-radius:99px;padding:5px 13px;cursor:pointer;color:var(--mut);transition:.15s}
 .tab.on{background:var(--acc);border-color:var(--acc);color:#fff}
+/* Tools */
 .tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
 .tools input[type=search]{flex:1 1 220px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 12px;outline:none}
 .tools input:focus,.tools select:focus{border-color:var(--acc)}
@@ -40,13 +46,15 @@ button,select,input{font:inherit;color:inherit}
 .seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
 .seg button{background:var(--panel);border:0;padding:8px 12px;cursor:pointer;color:var(--mut)}
 .seg button.on{background:var(--rowh);color:var(--tx);box-shadow:inset 0 -2px var(--acc)}
-.hd,.row{display:grid;grid-template-columns:36px 42px 1fr 92px 44px;align-items:center;gap:10px;padding:0 14px}
+/* Table */
+.hd,.row{display:grid;grid-template-columns:38px 46px 46px 1fr 92px 44px;align-items:center;gap:10px;padding:0 14px}
 .hd{color:var(--mut);font-size:12px;text-transform:uppercase;letter-spacing:.05em;padding-bottom:6px}
 .row{background:var(--row);border:1px solid var(--line);border-left:3px solid transparent;border-radius:10px;min-height:52px;margin-bottom:7px;transition:.15s}
 .row:hover{background:var(--rowh)}
 .row.done{border-left-color:var(--ok);background:var(--okbg)}
 .row.done .t{text-decoration:line-through;color:var(--mut)}
 .no{color:var(--mut);font-variant-numeric:tabular-nums;font-size:13px}
+.no-orig{color:var(--mut);font-variant-numeric:tabular-nums;font-size:11px}
 .t{font-weight:500;overflow-wrap:anywhere;padding:10px 0}
 .t em{display:block;font-style:normal;font-size:12px;color:var(--mut);font-weight:400}
 .pill{justify-self:start;font-size:12px;font-weight:600;border-radius:99px;padding:2px 10px;border:1px solid currentColor;background:transparent}
@@ -63,24 +71,29 @@ dialog{background:var(--panel);color:var(--tx);border:1px solid var(--line);bord
 dialog::backdrop{background:rgba(0,0,0,.55)}
 dialog p{margin:0 0 16px}
 dialog div{display:flex;gap:8px;justify-content:flex-end}
-@media(max-width:720px){
-.stats{grid-template-columns:repeat(2,1fr)}.cats{grid-template-columns:repeat(2,1fr)}
-.hd{display:none}
-.row{grid-template-columns:30px 1fr 40px;grid-template-areas:"c t g" "c p g";padding:8px 12px;row-gap:0}
-.row .ck{grid-area:c}.row .no{display:none}.row .t{grid-area:t;padding:4px 0 2px}.row .pill{grid-area:p;margin-bottom:6px}.row .go{grid-area:g}
+@media(max-width:900px){
+  .stages{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:620px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stages{grid-template-columns:repeat(2,1fr)}
+  .hd{display:none}
+  .row{grid-template-columns:30px 1fr 40px;grid-template-areas:"c t g" "c p g";padding:8px 12px;row-gap:0}
+  .row .ck{grid-area:c}.row .no{display:none}.row .no-orig{display:none}.row .t{grid-area:t;padding:4px 0 2px}.row .pill{grid-area:p;margin-bottom:6px}.row .go{grid-area:g}
 }
 </style>
 </head>
 <body>
 <div class="wrap">
 <header>
- <h1>DSA Practice Tracker<small>68 LeetCode problems · progress saved in this browser</small></h1>
+ <h1>DSA Practice Tracker<small>68 LeetCode problems · structured learning roadmap · progress saved in this browser</small></h1>
  <div style="display:flex;gap:8px">
   <button class="btn" id="theme" aria-label="Toggle theme">Theme</button>
   <button class="btn danger" id="reset">Reset progress</button>
  </div>
 </header>
 
+<!-- Overall Statistics -->
 <section class="stats">
  <div class="stat"><span>Total</span><b id="sT">68</b></div>
  <div class="stat"><span>Completed</span><b id="sC" style="color:var(--ok)">0</b></div>
@@ -88,103 +101,384 @@ dialog div{display:flex;gap:8px;justify-content:flex-end}
  <div class="stat"><span>Completion</span><b id="sP">0%</b></div>
 </section>
 <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" id="pb"><i id="pf"></i></div>
-<div class="cats" id="cats"></div>
 
+<!-- Stage-wise Progress -->
+<div class="stages" id="stages"></div>
+
+<!-- Tabs (All + stage names) -->
 <div class="tabs" id="tabs"></div>
+
+<!-- Filters & Search -->
 <div class="tools">
  <input type="search" id="q" placeholder="Search problems by title…" aria-label="Search problems">
+ <select id="sf" aria-label="Stage filter">
+  <option value="">All stages</option>
+  <option value="1">Stage 1 – Array Fundamentals</option>
+  <option value="2">Stage 2 – Hashing &amp; Frequency Counting</option>
+  <option value="3">Stage 3 – Two Pointers</option>
+  <option value="4">Stage 4 – Prefix Sums &amp; Difference Arrays</option>
+  <option value="5">Stage 5 – Sliding Window &amp; Advanced</option>
+ </select>
  <div class="seg" id="seg">
   <button data-s="all" class="on">All</button><button data-s="done">Completed</button><button data-s="pending">Pending</button>
  </div>
- <select id="df" aria-label="Difficulty"><option value="">All difficulties</option><option value="E">Easy</option><option value="M">Medium</option><option value="H">Hard</option></select>
- <select id="so" aria-label="Sort"><option value="n">Sort: Original order</option><option value="d">Sort: Difficulty</option><option value="t">Sort: Title A–Z</option><option value="s">Sort: Pending first</option></select>
+ <select id="df" aria-label="Difficulty">
+  <option value="">All difficulties</option>
+  <option value="E">Easy</option>
+  <option value="M">Medium</option>
+  <option value="H">Hard</option>
+ </select>
+ <select id="so" aria-label="Sort">
+  <option value="lo">Sort: Learning order</option>
+  <option value="d">Sort: Difficulty</option>
+  <option value="t">Sort: Title A–Z</option>
+  <option value="s">Sort: Pending first</option>
+ </select>
 </div>
 
-<div class="hd"><span></span><span>#</span><span>Problem</span><span>Difficulty</span><span></span></div>
+<!-- Table Header -->
+<div class="hd"><span></span><span title="Learning Order">Order</span><span title="Original Problem Number">Orig #</span><span>Problem</span><span>Difficulty</span><span></span></div>
 <div id="list"></div>
 </div>
 
 <dialog id="dlg">
- <p><b>Reset all progress?</b><br>This will uncheck every problem. This can’t be undone.</p>
+ <p><b>Reset all progress?</b><br>This will uncheck every problem. This can't be undone.</p>
  <div><button class="btn" id="no">Cancel</button><button class="btn danger" id="yes">Yes, reset</button></div>
 </dialog>
 
 <script>
-var KEY="dsa_tracker_progress_v1";
-var DATA=[
-["Arrays",[["Two Sum","E"],["Contains Duplicate","E"],["Valid Anagram","E"],["Majority Element","E"],["Move Zeroes","E"],["Missing Number","E"],["Best Time to Buy and Sell Stock","E"],["Find All Numbers Disappeared in an Array","E"],["Remove Duplicates from Sorted Array","E"],["Pascal’s Triangle","E"],["Group Anagrams","M"],["Top K Frequent Elements","M"],["Product of Array Except Self","M"],["Longest Consecutive Sequence","M"],["Rotate Array","M"],["Next Permutation","M"],["Sort Colors","M"],["Find the Duplicate Number","M"],["Majority Element II","M"],["Valid Sudoku","M"],["Maximum Subarray","M"],["Maximum Product Subarray","M"],["Find All Duplicates in an Array","M"],["Increasing Triplet Subsequence","M"],["Rearrange Array Elements by Sign","M"],["Longest Mountain in Array","M"],["First Missing Positive","H"],["Count Subarrays With Fixed Bounds","H"],["Minimum Number of Increments on Subarrays to Form a Target Array","H"],["Maximum Sum of 3 Non-Overlapping Subarrays","H"]]],
-["Prefix Sums & Difference Arrays",[["Running Sum of 1d Array","E"],["Find Pivot Index","E"],["Range Sum Query - Immutable","E"],["Left and Right Sum Differences","E"],["Subarray Sum Equals K","M"],["Continuous Subarray Sum","M"],["Contiguous Array","M"],["Subarray Sums Divisible by K","M"],["Range Sum Query 2D - Immutable","M"],["Corporate Flight Bookings","M"],["Count of Range Sum","H"],["Max Sum of Rectangle No Larger Than K","H"]]],
-["Two Pointers",[["Valid Palindrome","E"],["Two Sum II - Input Array Is Sorted","M"],["Reverse String","E"],["Squares of a Sorted Array","E"],["Merge Sorted Array","E"],["Backspace String Compare","E"],["3Sum","M"],["3Sum Closest","M"],["4Sum","M"],["Container With Most Water","M"],["Remove Duplicates from Sorted Array II","M"],["Boats to Save People","M"],["Valid Triangle Number","M"],["Bag of Tokens","M"],["Number of Subsequences That Satisfy the Given Sum Condition","M"],["Find K Closest Elements","M"],["Max Number of K-Sum Pairs","M"],["Trapping Rain Water","H"],["Minimum Number of Moves to Make Palindrome","H"],["Maximum Number of Visible Points","H"]]],
-["Sliding Window",[["Maximum Average Subarray I","E"],["Contains Duplicate II","E"],["Minimum Difference Between Highest and Lowest of K Scores","E"],["Longest Substring Without Repeating Characters","M"],["Longest Repeating Character Replacement","M"],["Permutation in String","M"]]]
-];
-var DN={E:"Easy",M:"Medium",H:"Hard"},DR={E:0,M:1,H:2};
-var P=[],C=DATA.map(function(x){return x[0]}),n=0;
-DATA.forEach(function(g){g[1].forEach(function(p){n++;
- P.push({n:n,t:p[0],d:p[1],c:g[0],u:"https://leetcode.com/problems/"+p[0].toLowerCase().replace(/['’]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")+"/"});});});
+// ─── Storage keys ───────────────────────────────────────────────────────────
+var KEY_NEW = "dsa_tracker_v2";           // new storage: keyed by originalNumber
+var KEY_OLD = "dsa_tracker_progress_v1";  // legacy storage: keyed by old sequential n
 
-var done={};
-function load(){try{var r=JSON.parse(localStorage.getItem(KEY));
- if(r&&typeof r==="object"&&!Array.isArray(r)){P.forEach(function(p){if(r[p.n]===true)done[p.n]=true;});}}catch(e){done={};}}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(done));}catch(e){}}
+// ─── Utility ────────────────────────────────────────────────────────────────
+function slugify(s){return s.toLowerCase().replace(/['']/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+function pct(a,b){return b?Math.round(a/b*100):0;}
+function $(i){return document.getElementById(i);}
+
+// ─── Problem Dataset ─────────────────────────────────────────────────────────
+// Fields: learningOrder, originalNumber, title, difficulty, stage, stageName, leetcodeUrl
+// originalNumber = sequential number from the OLD app (used as stable storage key)
+// learningOrder  = new display order 1-68
+
+var STAGE_NAMES = {
+  1: "Array Fundamentals",
+  2: "Hashing & Frequency Counting",
+  3: "Two Pointers",
+  4: "Prefix Sums & Difference Arrays",
+  5: "Sliding Window & Advanced Problems"
+};
+var STAGE_COUNTS = {1:15, 2:10, 3:14, 4:12, 5:17};
+
+// Raw data: [learningOrder, originalNumber, title, difficulty, stage]
+// originalNumber = old sequential problem number (stable LocalStorage key)
+var RAW = [
+  // STAGE 1 – Array Fundamentals (15)
+  [ 1,  2, "Contains Duplicate",                                         "E", 1],
+  [ 2,  5, "Move Zeroes",                                                "E", 1],
+  [ 3,  6, "Missing Number",                                             "E", 1],
+  [ 4, 31, "Running Sum of 1d Array",                                    "E", 1],
+  [ 5, 32, "Find Pivot Index",                                           "E", 1],
+  [ 6, 34, "Left and Right Sum Differences",                             "E", 1],
+  [ 7,  7, "Best Time to Buy and Sell Stock",                            "E", 1],
+  [ 8,  9, "Remove Duplicates from Sorted Array",                        "E", 1],
+  [ 9, 21, "Maximum Subarray",                                           "M", 1],
+  [10, 10, "Pascal's Triangle",                                          "E", 1],
+  [11, 15, "Rotate Array",                                               "M", 1],
+  [12,  8, "Find All Numbers Disappeared in an Array",                   "E", 1],
+  [13, 63, "Maximum Average Subarray I",                                 "E", 1],
+  [14, 65, "Minimum Difference Between Highest and Lowest of K Scores",  "E", 1],
+  [15,  4, "Majority Element",                                           "E", 1],
+  // STAGE 2 – Hashing & Frequency Counting (10)
+  [16,  1, "Two Sum",                                                    "E", 2],
+  [17,  3, "Valid Anagram",                                              "E", 2],
+  [18, 64, "Contains Duplicate II",                                      "E", 2],
+  [19, 11, "Group Anagrams",                                             "M", 2],
+  [20, 12, "Top K Frequent Elements",                                    "M", 2],
+  [21, 19, "Majority Element II",                                        "M", 2],
+  [22, 23, "Find All Duplicates in an Array",                            "M", 2],
+  [23, 14, "Longest Consecutive Sequence",                               "M", 2],
+  [24, 18, "Find the Duplicate Number",                                  "M", 2],
+  [25, 57, "Number of Subsequences That Satisfy the Given Sum Condition", "M", 2],
+  // STAGE 3 – Two Pointers (14)
+  [26, 43, "Valid Palindrome",                                           "E", 3],
+  [27, 45, "Reverse String",                                             "E", 3],
+  [28, 46, "Squares of a Sorted Array",                                  "E", 3],
+  [29, 47, "Merge Sorted Array",                                         "E", 3],
+  [30, 44, "Two Sum II - Input Array Is Sorted",                         "M", 3],
+  [31, 53, "Remove Duplicates from Sorted Array II",                     "M", 3],
+  [32, 48, "Backspace String Compare",                                   "E", 3],
+  [33, 52, "Container With Most Water",                                  "M", 3],
+  [34, 49, "3Sum",                                                       "M", 3],
+  [35, 50, "3Sum Closest",                                               "M", 3],
+  [36, 59, "Max Number of K-Sum Pairs",                                  "M", 3],
+  [37, 54, "Boats to Save People",                                       "M", 3],
+  [38, 51, "4Sum",                                                       "M", 3],
+  [39, 55, "Valid Triangle Number",                                      "M", 3],
+  // STAGE 4 – Prefix Sums & Difference Arrays (12)
+  [40, 33, "Range Sum Query - Immutable",                                "E", 4],
+  [41, 39, "Range Sum Query 2D - Immutable",                             "M", 4],
+  [42, 13, "Product of Array Except Self",                               "M", 4],
+  [43, 35, "Subarray Sum Equals K",                                      "M", 4],
+  [44, 36, "Continuous Subarray Sum",                                    "M", 4],
+  [45, 37, "Contiguous Array",                                           "M", 4],
+  [46, 38, "Subarray Sums Divisible by K",                               "M", 4],
+  [47, 40, "Corporate Flight Bookings",                                  "M", 4],
+  [48, 41, "Count of Range Sum",                                         "H", 4],
+  [49, 42, "Max Sum of Rectangle No Larger Than K",                      "H", 4],
+  [50, 28, "Count Subarrays With Fixed Bounds",                          "H", 4],
+  [51, 29, "Minimum Number of Increments on Subarrays to Form a Target Array", "H", 4],
+  // STAGE 5 – Sliding Window & Advanced Problems (17)
+  [52, 66, "Longest Substring Without Repeating Characters",             "M", 5],
+  [53, 68, "Permutation in String",                                      "M", 5],
+  [54, 67, "Longest Repeating Character Replacement",                    "M", 5],
+  [55, 24, "Increasing Triplet Subsequence",                             "M", 5],
+  [56, 17, "Sort Colors",                                                "M", 5],
+  [57, 25, "Rearrange Array Elements by Sign",                           "M", 5],
+  [58, 56, "Bag of Tokens",                                              "M", 5],
+  [59, 58, "Find K Closest Elements",                                    "M", 5],
+  [60, 60, "Trapping Rain Water",                                        "H", 5],
+  [61, 22, "Maximum Product Subarray",                                   "M", 5],
+  [62, 16, "Next Permutation",                                           "M", 5],
+  [63, 20, "Valid Sudoku",                                               "M", 5],
+  [64, 26, "Longest Mountain in Array",                                  "M", 5],
+  [65, 27, "First Missing Positive",                                     "H", 5],
+  [66, 30, "Maximum Sum of 3 Non-Overlapping Subarrays",                 "H", 5],
+  [67, 61, "Minimum Number of Moves to Make Palindrome",                 "H", 5],
+  [68, 62, "Maximum Number of Visible Points",                           "H", 5],
+];
+
+// Build problem objects
+var P = RAW.map(function(r){
+  var lo=r[0], on=r[1], title=r[2], diff=r[3], stage=r[4];
+  return {
+    learningOrder: lo,
+    originalNumber: on,
+    title: title,
+    difficulty: diff,
+    stage: stage,
+    stageName: STAGE_NAMES[stage],
+    leetcodeUrl: "https://leetcode.com/problems/" + slugify(title) + "/"
+  };
+});
+
+var DN = {E:"Easy", M:"Medium", H:"Hard"};
+var DR = {E:0, M:1, H:2};
+
+// ─── LocalStorage: migration + load/save ────────────────────────────────────
+// New storage: { "originalNumber": true, ... }  (keys are strings of originalNumber)
+// Old storage: { "1": true, ... } where the number was the old sequential index
+//
+// Migration map: old sequential index -> originalNumber
+// Old app built sequential numbers 1-68 by iterating categories in order:
+//   Arrays (30 problems, old n=1..30), Prefix Sums (12, n=31..42),
+//   Two Pointers (20, n=43..62), Sliding Window (6, n=63..68)
+// So old key == originalNumber for n=1..30 (Arrays category)
+// and for the rest they differ. We store a lookup: oldN -> originalNumber.
+var OLD_TO_ORIG = (function(){
+  // Reconstruct old DATA order exactly as the original app did:
+  var oldData = [
+    ["Arrays",["Two Sum","Contains Duplicate","Valid Anagram","Majority Element","Move Zeroes","Missing Number","Best Time to Buy and Sell Stock","Find All Numbers Disappeared in an Array","Remove Duplicates from Sorted Array","Pascal's Triangle","Group Anagrams","Top K Frequent Elements","Product of Array Except Self","Longest Consecutive Sequence","Rotate Array","Next Permutation","Sort Colors","Find the Duplicate Number","Majority Element II","Valid Sudoku","Maximum Subarray","Maximum Product Subarray","Find All Duplicates in an Array","Increasing Triplet Subsequence","Rearrange Array Elements by Sign","Longest Mountain in Array","First Missing Positive","Count Subarrays With Fixed Bounds","Minimum Number of Increments on Subarrays to Form a Target Array","Maximum Sum of 3 Non-Overlapping Subarrays"]],
+    ["Prefix Sums & Difference Arrays",["Running Sum of 1d Array","Find Pivot Index","Range Sum Query - Immutable","Left and Right Sum Differences","Subarray Sum Equals K","Continuous Subarray Sum","Contiguous Array","Subarray Sums Divisible by K","Range Sum Query 2D - Immutable","Corporate Flight Bookings","Count of Range Sum","Max Sum of Rectangle No Larger Than K"]],
+    ["Two Pointers",["Valid Palindrome","Two Sum II - Input Array Is Sorted","Reverse String","Squares of a Sorted Array","Merge Sorted Array","Backspace String Compare","3Sum","3Sum Closest","4Sum","Container With Most Water","Remove Duplicates from Sorted Array II","Boats to Save People","Valid Triangle Number","Bag of Tokens","Number of Subsequences That Satisfy the Given Sum Condition","Find K Closest Elements","Max Number of K-Sum Pairs","Trapping Rain Water","Minimum Number of Moves to Make Palindrome","Maximum Number of Visible Points"]],
+    ["Sliding Window",["Maximum Average Subarray I","Contains Duplicate II","Minimum Difference Between Highest and Lowest of K Scores","Longest Substring Without Repeating Characters","Longest Repeating Character Replacement","Permutation in String"]]
+  ];
+  // Build title -> originalNumber from new P
+  var titleToOrig = {};
+  P.forEach(function(p){ titleToOrig[p.title] = p.originalNumber; });
+  var map = {};
+  var oldN = 0;
+  oldData.forEach(function(cat){
+    cat[1].forEach(function(title){
+      oldN++;
+      var orig = titleToOrig[title];
+      if(orig !== undefined) map[oldN] = orig;
+    });
+  });
+  return map;
+})();
+
+var done = {}; // keyed by originalNumber (number)
+
+function load(){
+  // Try new storage first
+  try{
+    var r = JSON.parse(localStorage.getItem(KEY_NEW));
+    if(r && typeof r === "object" && !Array.isArray(r)){
+      P.forEach(function(p){
+        if(r[p.originalNumber] === true) done[p.originalNumber] = true;
+      });
+      return; // loaded from new format, done
+    }
+  }catch(e){}
+  // Fall back to old storage migration
+  try{
+    var old = JSON.parse(localStorage.getItem(KEY_OLD));
+    if(old && typeof old === "object" && !Array.isArray(old)){
+      Object.keys(old).forEach(function(k){
+        if(old[k] === true){
+          var origNum = OLD_TO_ORIG[parseInt(k,10)];
+          if(origNum !== undefined) done[origNum] = true;
+        }
+      });
+      // Persist in new format and remove old key to avoid re-migration
+      save();
+      try{ localStorage.removeItem(KEY_OLD); }catch(e){}
+    }
+  }catch(e){ done = {}; }
+}
+
+function save(){
+  try{ localStorage.setItem(KEY_NEW, JSON.stringify(done)); }catch(e){}
+}
+
 load();
 
-var cat="All",st="all",$=function(i){return document.getElementById(i)};
+// ─── UI State ────────────────────────────────────────────────────────────────
+var filterStage = ""; // "" = all, "1"-"5"
+var filterStatus = "all"; // "all"|"done"|"pending"
 
-function pct(a,b){return b?Math.round(a/b*100):0}
+// ─── Render: Stats + Stage cards ─────────────────────────────────────────────
 function renderStats(){
- var c=Object.keys(done).length;
- $("sC").textContent=c;$("sR").textContent=P.length-c;$("sP").textContent=pct(c,P.length)+"%";
- $("pf").style.width=pct(c,P.length)+"%";$("pb").setAttribute("aria-valuenow",pct(c,P.length));
- $("cats").innerHTML=C.map(function(k){
-  var all=P.filter(function(p){return p.c===k}),d=all.filter(function(p){return done[p.n]}).length;
-  return '<button class="cat" data-c="'+k+'"><div class="n"><span>'+k+'</span><span>'+d+'/'+all.length+'</span></div><div class="bar"><i style="width:'+pct(d,all.length)+'%"></i></div></button>';
- }).join("");
-}
-function renderTabs(){
- $("tabs").innerHTML=["All"].concat(C).map(function(k){return '<button class="tab'+(k===cat?' on':'')+'" data-c="'+k+'">'+k+'</button>'}).join("");
-}
-function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
-function renderList(){
- var q=$("q").value.trim().toLowerCase(),df=$("df").value,so=$("so").value;
- var L=P.filter(function(p){
-  return (cat==="All"||p.c===cat)&&(!df||p.d===df)&&(!q||p.t.toLowerCase().indexOf(q)>-1)&&
-   (st==="all"||(st==="done")===!!done[p.n]);
- });
- L.sort(function(a,b){
-  if(so==="d")return DR[a.d]-DR[b.d]||a.n-b.n;
-  if(so==="t")return a.t.localeCompare(b.t);
-  if(so==="s")return (!!done[a.n]-!!done[b.n])||a.n-b.n;
-  return a.n-b.n;});
- $("list").innerHTML=L.length?L.map(function(p){
-  var d=!!done[p.n];
-  return '<div class="row'+(d?' done':'')+'" data-n="'+p.n+'">'+
-   '<input class="ck" type="checkbox" '+(d?'checked ':'')+'aria-label="Mark '+esc(p.t)+' as completed">'+
-   '<span class="no">'+p.n+'</span>'+
-   '<div class="t">'+esc(p.t)+(cat==="All"?'<em>'+p.c+'</em>':'')+'</div>'+
-   '<span class="pill '+p.d+'">'+DN[p.d]+'</span>'+
-   '<a class="go" href="'+p.u+'" target="_blank" rel="noopener noreferrer" title="Open on LeetCode" aria-label="Open '+esc(p.t)+' on LeetCode">'+
-   '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg></a></div>';
- }).join(""):'<div class="empty">No problems match your filters.</div>';
-}
-function renderAll(){renderStats();renderTabs();renderList();}
+  var c = Object.keys(done).length;
+  $("sC").textContent = c;
+  $("sR").textContent = P.length - c;
+  $("sP").textContent = pct(c, P.length) + "%";
+  $("pf").style.width = pct(c, P.length) + "%";
+  $("pb").setAttribute("aria-valuenow", pct(c, P.length));
 
-$("list").addEventListener("change",function(e){
- if(!e.target.classList.contains("ck"))return;
- var row=e.target.closest(".row"),id=row.getAttribute("data-n");
- if(e.target.checked)done[id]=true;else delete done[id];
- save();
- if(st!=="all"||$("so").value==="s"){renderAll();}
- else{row.classList.toggle("done",e.target.checked);renderStats();}
+  // Stage cards
+  var stageNums = [1,2,3,4,5];
+  $("stages").innerHTML = stageNums.map(function(s){
+    var all = P.filter(function(p){ return p.stage === s; });
+    var d = all.filter(function(p){ return done[p.originalNumber]; }).length;
+    var active = filterStage === String(s) ? " active" : "";
+    return '<button class="stage-card'+active+'" data-stage="'+s+'">' +
+      '<div class="sc-title">Stage '+s+'</div>' +
+      '<div class="sc-sub">'+esc(STAGE_NAMES[s])+'</div>' +
+      '<div class="sc-counts"><span>'+d+'/'+all.length+'</span><span>'+pct(d,all.length)+'%</span></div>' +
+      '<div class="bar"><i style="width:'+pct(d,all.length)+'%"></i></div>' +
+      '</button>';
+  }).join("");
+}
+
+// ─── Render: Tabs ─────────────────────────────────────────────────────────────
+function renderTabs(){
+  var options = [{label:"All", stage:""}].concat([1,2,3,4,5].map(function(s){
+    return {label:"Stage "+s, stage:String(s)};
+  }));
+  $("tabs").innerHTML = options.map(function(o){
+    return '<button class="tab'+(o.stage===filterStage?' on':'')+'" data-stage="'+o.stage+'">'+o.label+'</button>';
+  }).join("");
+}
+
+// ─── Render: Problem List ─────────────────────────────────────────────────────
+function renderList(){
+  var q = $("q").value.trim().toLowerCase();
+  var df = $("df").value;
+  var sf = $("sf").value || filterStage;
+  var so = $("so").value;
+
+  var L = P.filter(function(p){
+    return (!sf || p.stage === parseInt(sf,10)) &&
+      (!df || p.difficulty === df) &&
+      (!q || p.title.toLowerCase().indexOf(q) > -1) &&
+      (filterStatus === "all" || (filterStatus === "done") === !!done[p.originalNumber]);
+  });
+
+  L.sort(function(a,b){
+    if(so === "d") return DR[a.difficulty] - DR[b.difficulty] || a.learningOrder - b.learningOrder;
+    if(so === "t") return a.title.localeCompare(b.title);
+    if(so === "s") return (!!done[a.originalNumber] - !!done[b.originalNumber]) || a.learningOrder - b.learningOrder;
+    return a.learningOrder - b.learningOrder; // default: learning order
+  });
+
+  $("list").innerHTML = L.length ? L.map(function(p){
+    var d = !!done[p.originalNumber];
+    var showStage = !sf && !filterStage;
+    return '<div class="row'+(d?' done':'')+'" data-orig="'+p.originalNumber+'">' +
+      '<input class="ck" type="checkbox" '+(d?'checked ':'')+' aria-label="Mark '+esc(p.title)+' as completed">' +
+      '<span class="no" title="Learning order">' + p.learningOrder + '</span>' +
+      '<span class="no-orig" title="Original problem number">' + p.originalNumber + '</span>' +
+      '<div class="t">' + esc(p.title) + (showStage ? '<em>Stage '+p.stage+' – '+esc(p.stageName)+'</em>' : '') + '</div>' +
+      '<span class="pill '+p.difficulty+'">' + DN[p.difficulty] + '</span>' +
+      '<a class="go" href="'+p.leetcodeUrl+'" target="_blank" rel="noopener noreferrer" title="Open on LeetCode" aria-label="Open '+esc(p.title)+' on LeetCode">' +
+      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>' +
+      '</a></div>';
+  }).join("") : '<div class="empty">No problems match your filters.</div>';
+}
+
+function renderAll(){ renderStats(); renderTabs(); renderList(); }
+
+// ─── Event Listeners ──────────────────────────────────────────────────────────
+// Checkbox toggle
+$("list").addEventListener("change", function(e){
+  if(!e.target.classList.contains("ck")) return;
+  var row = e.target.closest(".row");
+  var orig = parseInt(row.getAttribute("data-orig"), 10);
+  if(e.target.checked) done[orig] = true; else delete done[orig];
+  save();
+  if(filterStatus !== "all" || $("so").value === "s"){ renderAll(); }
+  else{ row.classList.toggle("done", e.target.checked); renderStats(); }
 });
-$("tabs").addEventListener("click",function(e){var b=e.target.closest(".tab");if(!b)return;cat=b.dataset.c;renderTabs();renderList();});
-$("cats").addEventListener("click",function(e){var b=e.target.closest(".cat");if(!b)return;cat=b.dataset.c;renderTabs();renderList();});
-$("seg").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;st=b.dataset.s;
- Array.prototype.forEach.call($("seg").children,function(x){x.classList.toggle("on",x===b)});renderList();});
-["q","df","so"].forEach(function(i){$(i).addEventListener("input",renderList);});
-$("reset").onclick=function(){$("dlg").showModal();};
-$("no").onclick=function(){$("dlg").close();};
-$("yes").onclick=function(){done={};try{localStorage.removeItem(KEY);}catch(e){}$("dlg").close();renderAll();};
-$("theme").onclick=function(){var r=document.documentElement;r.setAttribute("data-theme",r.getAttribute("data-theme")==="light"?"dark":"light");};
+
+// Stage card clicks
+$("stages").addEventListener("click", function(e){
+  var b = e.target.closest(".stage-card");
+  if(!b) return;
+  var s = b.dataset.stage;
+  filterStage = filterStage === s ? "" : s; // toggle
+  $("sf").value = "";
+  renderAll();
+});
+
+// Tab clicks
+$("tabs").addEventListener("click", function(e){
+  var b = e.target.closest(".tab");
+  if(!b) return;
+  filterStage = b.dataset.stage;
+  $("sf").value = "";
+  renderAll();
+});
+
+// Stage select dropdown (syncs with filterStage)
+$("sf").addEventListener("change", function(){
+  filterStage = $("sf").value;
+  renderTabs();
+  renderStats();
+  renderList();
+});
+
+// Status filter
+$("seg").addEventListener("click", function(e){
+  var b = e.target.closest("button");
+  if(!b) return;
+  filterStatus = b.dataset.s;
+  Array.prototype.forEach.call($("seg").children, function(x){ x.classList.toggle("on", x === b); });
+  renderList();
+});
+
+// Search, difficulty, sort
+["q","df","so"].forEach(function(i){ $(i).addEventListener("input", renderList); });
+
+// Reset
+$("reset").onclick = function(){ $("dlg").showModal(); };
+$("no").onclick = function(){ $("dlg").close(); };
+$("yes").onclick = function(){
+  done = {};
+  try{ localStorage.removeItem(KEY_NEW); }catch(e){}
+  $("dlg").close();
+  renderAll();
+};
+
+// Theme
+$("theme").onclick = function(){
+  var r = document.documentElement;
+  r.setAttribute("data-theme", r.getAttribute("data-theme") === "light" ? "dark" : "light");
+};
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
 document.documentElement.setAttribute("data-theme","dark");
 renderAll();
 </script>
